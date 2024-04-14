@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[3]:
+# In[1]:
 
 
 # This Python 3 environment comes with many helpful analytics libraries installed
@@ -23,7 +23,7 @@ for dirname, _, filenames in os.walk('/kaggle/input'):
 # You can also write temporary files to /kaggle/temp/, but they won't be saved outside of the current session
 
 
-# In[4]:
+# In[2]:
 
 
 #The main idea of this code is to use the random forest model.
@@ -32,7 +32,7 @@ for dirname, _, filenames in os.walk('/kaggle/input'):
 #We will be renaming any complex names present in the dataset
 
 
-# In[5]:
+# In[3]:
 
 
 #Loads the data into the notebook
@@ -40,7 +40,7 @@ train_dat = pd.read_csv("/kaggle/input/who-is-the-real-winner/train.csv")
 train_dat.columns
 
 
-# In[6]:
+# In[4]:
 
 
 #We will rename the constituency column
@@ -48,59 +48,59 @@ train_dat.columns
 train_dat.isnull().sum()
 
 
-# In[7]:
+# In[5]:
 
 
 #We will be goinh through all the individual columns for the datasets, and their datatypes.
 #Will encode them as and when required.
 
 
-# In[8]:
+# In[6]:
 
 
 #ID
 train_dat['ID'].unique()
 
 
-# In[9]:
+# In[7]:
 
 
 train_dat['ID'].dtype
 
 
-# In[10]:
+# In[8]:
 
 
 #Candidates
 train_dat['Candidate'].unique()
 
 
-# In[11]:
+# In[9]:
 
 
 train_dat['Candidate'].dtype
 
 
-# In[12]:
+# In[10]:
 
 
 #Constituencies
 train_dat = train_dat.rename(columns={'Constituency ∇': 'Constituency'})
 
 
-# In[13]:
+# In[11]:
 
 
 train_dat['Constituency'].unique()
 
 
-# In[14]:
+# In[12]:
 
 
 train_dat['Constituency'].dtype
 
 
-# In[15]:
+# In[13]:
 
 
 # Importing the LabelEncoder module from the scikit-learn library
@@ -125,20 +125,20 @@ train_dat['Constituency'] = encoded_data
 print(train_dat['Constituency'].unique())
 
 
-# In[16]:
+# In[14]:
 
 
 #Parties
 train_dat['Party'].unique()
 
 
-# In[17]:
+# In[15]:
 
 
 train_dat['Party'].dtype
 
 
-# In[18]:
+# In[16]:
 
 
 # Extracting the 'Party' column from the train_dat dataset
@@ -151,33 +151,33 @@ train_dat['Party'] = label_encoder.fit_transform(data) + 1
 print(train_dat['Party'].unique())
 
 
-# In[19]:
+# In[17]:
 
 
 #Criminal Cases
 train_dat['Criminal Case'].unique()
 
 
-# In[20]:
+# In[18]:
 
 
 train_dat['Criminal Case'].dtype
 
 
-# In[21]:
+# In[19]:
 
 
 #Total assets
 train_dat['Total Assets'].unique()
 
 
-# In[22]:
+# In[20]:
 
 
 train_dat['Total Assets'].dtype
 
 
-# In[23]:
+# In[21]:
 
 
 #This means that we need to convert the datatypes of the Total Assets
@@ -185,20 +185,20 @@ train_dat['Total Assets'].dtype
 #Will be dealt similarly.
 
 
-# In[24]:
+# In[22]:
 
 
 #The liabilities in the data
 train_dat['Liabilities'].unique()
 
 
-# In[25]:
+# In[23]:
 
 
 train_dat['Liabilities'].dtype
 
 
-# In[26]:
+# In[24]:
 
 
 #Data conversion for Total Assets and Liabilites
@@ -224,7 +224,7 @@ def numero_uno_conv(value):
         return float(value.replace('+', ''))
 
 
-# In[27]:
+# In[25]:
 
 
 dat_1 = train_dat['Total Assets']
@@ -233,39 +233,39 @@ dat_2 = train_dat['Liabilities']
 train_dat['Liabilities'] = [numero_uno_conv(value) for value in dat_2]
 
 
-# In[28]:
+# In[26]:
 
 
 train_dat['Total Assets'].dtype
 
 
-# In[29]:
+# In[27]:
 
 
 train_dat['Liabilities'].dtype
 
 
-# In[30]:
+# In[28]:
 
 
 #We can see the presence of nill values in the dataset
 train_dat.isnull().sum()
 
 
-# In[31]:
+# In[29]:
 
 
 #States
 train_dat['state'].unique()
 
 
-# In[32]:
+# In[30]:
 
 
 train_dat['state'].dtype
 
 
-# In[33]:
+# In[31]:
 
 
 # Extracting the 'state' column from the train_dat dataset
@@ -281,20 +281,20 @@ train_dat['state'] = label_encoder.fit_transform(data) + 1
 print(train_dat['state'].unique())
 
 
-# In[34]:
+# In[32]:
 
 
 #Education
 train_dat['Education'].unique()
 
 
-# In[35]:
+# In[33]:
 
 
 train_dat['Education'].dtype
 
 
-# In[36]:
+# In[34]:
 
 
 #We will be encoding Total Assets
@@ -312,7 +312,7 @@ train_dat['Total Assets'] = label_encoder.fit_transform(data) + 1
 print(train_dat['Total Assets'].unique())
 
 
-# In[37]:
+# In[35]:
 
 
 #Same for liabilities
@@ -330,7 +330,7 @@ train_dat['Liabilities'] = label_encoder.fit_transform(data) + 1
 print(train_dat['Liabilities'].unique())
 
 
-# In[38]:
+# In[36]:
 
 
 from sklearn.model_selection import GridSearchCV
@@ -338,25 +338,25 @@ from sklearn.metrics import f1_score
 from sklearn.ensemble import RandomForestClassifier
 
 
-# In[39]:
+# In[37]:
 
 
 #Now, we have read the training data, now is the time we repeat the steps with the test data.
 
 
-# In[40]:
+# In[38]:
 
 
 test_dat = pd.read_csv("/kaggle/input/who-is-the-real-winner/test.csv")
 
 
-# In[41]:
+# In[39]:
 
 
 test_dat.columns
 
 
-# In[42]:
+# In[40]:
 
 
 #The objects are similar to that of the training dataset, so lets do the same with the test dataset.
@@ -364,14 +364,14 @@ test_dat.columns
 #Encode the data as and when required.
 
 
-# In[43]:
+# In[41]:
 
 
 #Constituency
 test_dat = test_dat.rename(columns={'Constituency ∇': 'Constituency'})
 
 
-# In[44]:
+# In[42]:
 
 
 # Extract the 'Constituency' column from the train_dat dataframe
@@ -393,7 +393,7 @@ test_dat['Constituency'] = encoded_data
 print(test_dat['Constituency'].unique())
 
 
-# In[45]:
+# In[43]:
 
 
 # Extracting the 'Party' column from the train_dat dataset
@@ -406,7 +406,7 @@ test_dat['Party'] = label_encoder.fit_transform(data) + 1
 print(test_dat['Party'].unique())
 
 
-# In[46]:
+# In[44]:
 
 
 #Conversion of the Assets and Liabilities into the numerical values
@@ -416,7 +416,7 @@ data2 = test_dat['Liabilities']
 test_dat['Liabilities'] = [numero_uno_conv(value) for value in data2]
 
 
-# In[47]:
+# In[45]:
 
 
 # Extracting the 'state' column from the train_dat dataset
@@ -432,7 +432,7 @@ test_dat['state'] = label_encoder.fit_transform(data) + 1
 print(test_dat['state'].unique())
 
 
-# In[48]:
+# In[46]:
 
 
 #Ranging to the total assets first and verify it.
@@ -440,7 +440,7 @@ print(test_dat['state'].unique())
 test_dat['Total Assets'].unique()
 
 
-# In[49]:
+# In[47]:
 
 
 #Ranging to the total assets first and verify it.
@@ -448,7 +448,7 @@ test_dat['Total Assets'].unique()
 test_dat['Liabilities'].unique()
 
 
-# In[50]:
+# In[48]:
 
 
 #We will be encoding Total Assets
@@ -466,7 +466,7 @@ test_dat['Total Assets'] = label_encoder.fit_transform(data) + 1
 print(test_dat['Total Assets'].unique())
 
 
-# In[51]:
+# In[49]:
 
 
 #Same for liabilities
@@ -484,14 +484,14 @@ test_dat['Liabilities'] = label_encoder.fit_transform(data) + 1
 print(test_dat['Liabilities'].unique())
 
 
-# In[52]:
+# In[50]:
 
 
 #Now, we will start the plotting and prediction
 test = test_dat.drop(['ID', 'Candidate', 'Constituency'], axis=1)
 
 
-# In[54]:
+# In[51]:
 
 
 from sklearn.metrics import accuracy_score,f1_score
@@ -516,39 +516,148 @@ f1 = f1_score(y_test, y_pred, average='weighted')
 print("F1 score on test set:", f1)
 
 
-# In[56]:
+# In[52]:
 
 
 y_pred = rf_class.predict(test)
 
 
-# In[57]:
+# In[53]:
 
 
 result = pd.DataFrame(y_pred)
 
 
-# In[58]:
+# In[54]:
 
 
 result.columns = ['Education']
 
 
-# In[59]:
+# In[55]:
 
 
 submission = pd.DataFrame(test_dat['ID'])
 
 
-# In[61]:
+# In[56]:
 
 
 submission['Education'] =  result['Education']
 submission.reset_index(drop=True , inplace=True)
 
 
-# In[62]:
+# In[57]:
 
 
 submission.to_csv('/kaggle/working/submission.csv', index= False)
+
+
+# In[58]:
+
+
+import matplotlib.pyplot as plt
+
+# Plot histogram for Total Assets
+plt.hist(train_dat['Total Assets'], bins=20, color='skyblue', edgecolor='black')
+plt.title('Distribution of Total Assets')
+plt.xlabel('Total Assets')
+plt.ylabel('Frequency')
+plt.show()
+
+
+# In[59]:
+
+
+import matplotlib.pyplot as plt
+
+# Plot histogram for Liabilities
+plt.figure(figsize=(8, 6))
+plt.hist(train_dat['Liabilities'], bins=20, color='skyblue', edgecolor='black')
+plt.title('Distribution of Liabilities')
+plt.xlabel('Liabilities')
+plt.ylabel('Frequency')
+plt.grid(True)
+plt.show()
+
+
+# In[60]:
+
+
+import matplotlib.pyplot as plt
+
+# Count the frequency of each party
+party_counts = train_dat['Party'].value_counts()
+
+# Plot bar plot for Party
+plt.figure(figsize=(10, 6))
+party_counts.plot(kind='bar', color='skyblue', edgecolor='black')
+plt.title('Frequency of Parties')
+plt.xlabel('Party')
+plt.ylabel('Frequency')
+plt.xticks(rotation=45, ha='right')
+plt.grid(axis='y')
+plt.tight_layout()
+plt.show()
+
+
+# In[61]:
+
+
+import matplotlib.pyplot as plt
+
+# Count the frequency of each value in 'Criminal Cases'
+criminal_cases_counts = train_dat['Criminal Case'].value_counts()
+
+# Plot bar plot for Criminal Cases
+plt.figure(figsize=(10, 6))
+criminal_cases_counts.plot(kind='bar', color='skyblue', edgecolor='black')
+plt.title('Frequency of Criminal Cases')
+plt.xlabel('Criminal Cases')
+plt.ylabel('Frequency')
+plt.xticks(rotation=45, ha='right')
+plt.grid(axis='y')
+plt.tight_layout()
+plt.show()
+
+
+# In[62]:
+
+
+import matplotlib.pyplot as plt
+
+# Count the frequency of each value in 'Education'
+education_counts = train_dat['Education'].value_counts()
+
+# Plot bar plot for Education
+plt.figure(figsize=(10, 6))
+education_counts.plot(kind='bar', color='skyblue', edgecolor='black')
+plt.title('Frequency of Education Levels')
+plt.xlabel('Education Level')
+plt.ylabel('Frequency')
+plt.xticks(rotation=45, ha='right')
+plt.grid(axis='y')
+plt.tight_layout()
+plt.show()
+
+
+
+# In[63]:
+
+
+import matplotlib.pyplot as plt
+
+# Count the frequency of each value in 'state'
+state_counts = train_dat['state'].value_counts()
+
+# Plot bar plot for state
+plt.figure(figsize=(10, 6))
+state_counts.plot(kind='bar', color='skyblue', edgecolor='black')
+plt.title('Frequency of States')
+plt.xlabel('State')
+plt.ylabel('Frequency')
+plt.xticks(rotation=45, ha='right')
+plt.grid(axis='y')
+plt.tight_layout()
+plt.show()
 
